@@ -3,9 +3,9 @@ schemaVersion = "0.0.1"
 
 [package]
 namespace = "MiniPrince123"
-name = "Minimap_Rotation_Lock"
-description = "Reveals what each side objective is without having to get close to it."
-websiteUrl = "https://github.com/MiniPrince123/SecondMycoMod"
+name = "Better_Minimap"
+description = "Adds a few QoL features to the minimap."
+websiteUrl = "https://github.com/MiniPrince123/Better_Minimap"
 containsNsfwContent = false
 
 [package.dependencies]
@@ -17,8 +17,8 @@ icon = "icon.png"
 readme = "README.md"
 
 [[build.copy]]
-source = "bin/Release/netstandard2.1/Minimap_Rotation_Lock.dll"
-target = "BepInEx/plugins/Minimap_Rotation_Lock.dll"
+source = "bin/Release/netstandard2.1/miniprince123.betterminimap.dll"
+target = "BepInEx/plugins/miniprince123.betterminimap.dll"
 
 [[build.copy]]
 source = "CHANGELOG.md"

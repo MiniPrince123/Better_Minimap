@@ -2,9 +2,7 @@
 using HarmonyLib;
 using UnityEngine;
 using BepInEx.Logging;
-using BepInEx.Configuration;
 using Pigeon.Movement;
-using System;
 
 namespace MyMycoModRoot;
 
@@ -12,38 +10,20 @@ namespace MyMycoModRoot;
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {
+    // public const string PluginGUID = MyPluginInfo.PLUGIN_GUID;
+    // public const string PluginName = MyPluginInfo.PLUGIN_NAME;
+    // public const string PluginVersion = MyPluginInfo.PLUGIN_VERSION;
+
     private Harmony _harmony;
     internal new static ManualLogSource Logger;
-    private ConfigEntry<bool> _northUp;
-    internal static bool IsNorthUp { get; private set; }
-    private ConfigEntry<short> _zoomAmount;
-    internal static int GetZoomAmount { get; private set; }
 
     private void Awake()
     {
         Logger = base.Logger;
-        Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
+        Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} ({MyPluginInfo.PLUGIN_VERSION}) is loaded!");
 
-        _northUp = Config.Bind(
-            "General",
-            "North Up",
-            true,
-            "If set to true, the player's icon will rotate instead of the world around the player.");
-        IsNorthUp = _northUp.Value;
-        _northUp.SettingChanged += (_, _) => IsNorthUp = _northUp.Value;
-
-        _zoomAmount = Config.Bind(
-            "General",
-            "Zoom Amount",
-            (short)80,
-            new ConfigDescription(
-                "Changes how zoomed in the minimap is.",
-                new AcceptableValueRange<short>(1, 512)
-            )
-        );
-        GetZoomAmount = _zoomAmount.Value;
-        _zoomAmount.SettingChanged += (_, _) => { GetZoomAmount = Mathf.Clamp(_zoomAmount.Value, 1, 512); };
-
+        Configs.Initialize(Config);
+        Logger.LogInfo($"Config initialized: NorthUp={Configs.NorthUp.Value}, ZoomAmount={Configs.ZoomAmount.Value}");
 
         _harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
         _harmony.PatchAll();
@@ -65,7 +45,7 @@ internal static class MinimapPingsPatch
     [HarmonyPrefix]
     private static void Prefix(ref Quaternion rotation)
     {
-        if (!Plugin.IsNorthUp)
+        if (!Configs.NorthUp.Value)
             return;
 
         // Stops waypoints/pings from rotating
@@ -79,26 +59,20 @@ internal static class MinimapPingsPatch
 )]
 internal static class MinimapRendererPatch
 {
-    // [HarmonyPrefix]
-    // private static void Prefix(Minimap __instance)
-    // {
-    //     if (!Plugin.IsNorthUp)
-    //         return;
-    //
-    //     
-    // }
-
     [HarmonyPostfix]
     private static void Postfix(Minimap __instance)
     {
-        Plugin.Logger.LogInfo("__instance.transform.localScale bfr: " + __instance.transform.localScale);
-        __instance.transform.localScale = new Vector3(2f, 2f, 2f);
-        Plugin.Logger.LogInfo("__instance.transform.localScale aft: " + __instance.transform.localScale);
+        // Changes map scale
+        // __instance.transform.localScale = new Vector3(Configs.MapScale.Value, Configs.MapScale.Value, Configs.MapScale.Value);
+        // __instance.transform.localPosition = new Vector3(Configs.MapScale.Value, Configs.MapScale.Value, Configs.MapScale.Value);
+        // Plugin.Logger.LogInfo("GetTopLeftPos : " + __instance.GetTopLeftPos());
+        // Plugin.Logger.LogInfo("transform.position : " + __instance.transform.position);
+        // Plugin.Logger.LogInfo("transform.localPosition : " + __instance.transform.localPosition);
         
         // Changes map zoom amount
-        __instance.minimapWorldRadius = Plugin.GetZoomAmount;
-        
-        if (!Plugin.IsNorthUp)
+        __instance.minimapWorldRadius = Configs.ZoomAmount.Value;
+
+        if (!Configs.NorthUp.Value)
             return;
 
         // Stops the map image from rotating
