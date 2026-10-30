@@ -2,12 +2,12 @@
     <PropertyGroup>
         <ModGuid>miniprince123.better_minimap</ModGuid>
         <ModName>Better_Minimap</ModName>
+        <Authors>MiniPrince123</Authors>
         
         <AssemblyName>$(ModName)</AssemblyName>
         <BepInExPluginName>$(ModName)</BepInExPluginName>
         <BepInExPluginGuid>$(ModGuid)</BepInExPluginGuid>
         
-        <Authors>MiniPrince123</Authors>
         
         <TargetFramework>netstandard2.1</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
