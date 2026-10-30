@@ -17,8 +17,8 @@ icon = "icon.png"
 readme = "README.md"
 
 [[build.copy]]
-source = "bin/Release/netstandard2.1/miniprince123.betterminimap.dll"
-target = "BepInEx/plugins/miniprince123.betterminimap.dll"
+source = "bin/Release/netstandard2.1/Better_Minimap.dll"
+target = "BepInEx/plugins/Better_Minimap.dll"
 
 [[build.copy]]
 source = "CHANGELOG.md"
