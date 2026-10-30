@@ -12,7 +12,7 @@ internal static class MinimapSideObjectivesPatch
     [HarmonyPostfix]
     private static void Postfix(ref Waypoint __result)
     {
-        if (!Configs.NorthUp.Value)
+        if (!Configs.SideObjectivesRevealed.Value)
             return;
         
         if(__result.NearbyIconDistance > 0.0)

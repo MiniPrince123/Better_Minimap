@@ -27,7 +27,7 @@ internal static class Configs
         ZoomAmount = configFile.Bind(
             "Features",
             "Zoom Amount",
-            (short)80,
+            (short)180,
             new ConfigDescription(
                 "Changes how zoomed in the minimap is. (lower = more zoomed in)",
                 new AcceptableValueRange<short>(1, 512)
