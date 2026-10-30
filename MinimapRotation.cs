@@ -1,7 +1,5 @@
-using BepInEx;
 using HarmonyLib;
 using UnityEngine;
-using BepInEx.Logging;
 using Pigeon.Movement;
 
 namespace MyMycoModRoot;
@@ -23,7 +21,6 @@ internal static class MinimapRotation
         rotation = Quaternion.identity;
     }
     
-    
     [HarmonyPatch(
         typeof(Minimap),
         nameof(Minimap.UpdateMinimap)
@@ -39,7 +36,6 @@ internal static class MinimapRotation
         // Enables player icon to rotate
         __instance.playerPointer.rectTransform.localRotation =
             Quaternion.Euler(0.0f, 0.0f, -PlayerLook.Rotation.eulerAngles.y);
-        
         
         
         

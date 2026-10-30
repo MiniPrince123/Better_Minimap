@@ -5,20 +5,27 @@ namespace MyMycoModRoot;
 
 internal static class Configs
 {
+    public static ConfigEntry<bool> SideObjectivesRevealed { get; private set; }
     public static ConfigEntry<bool> NorthUp { get; private set; }
     public static ConfigEntry<short> ZoomAmount { get; private set; }
     // public static ConfigEntry<float> MapScale { get; private set; }
 
     internal static void Initialize(ConfigFile configFile)
     {
+        SideObjectivesRevealed = configFile.Bind(
+            "Features",
+            "Reveal Side Objectives",
+            true,
+            "If true, reveals what each side objectives are without having to go near them.");
+
         NorthUp = configFile.Bind(
-            "General",
+            "Features",
             "North Up",
             true,
-            "If True, the player's icon will rotate instead of the world around the player.");
+            "If true, north will always point upwards.");
         
         ZoomAmount = configFile.Bind(
-            "General",
+            "Features",
             "Zoom Amount",
             (short)80,
             new ConfigDescription(
